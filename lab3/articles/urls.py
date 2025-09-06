@@ -5,6 +5,9 @@ from . import views, converters
 register_converter(converters.FourDigitYearConverter, 'yyyy')
 
 urlpatterns = [
+    # Home page
+    path("", views.home, name="home"),
+    
     # Basic examples from the documentation (with names for URL reversal)
     path("articles/2003/", views.special_case_2003, name="special-2003"),
     path("articles/<int:year>/", views.year_archive, name="year-archive"),
@@ -31,4 +34,21 @@ urlpatterns = [
     path("string/<name>/", views.string_example, name="string-example-2"),  # Same as above, str is implicit
     path("uuid/<uuid:id>/", views.uuid_example, name="uuid-example"),
     path("path/<path:path>/", views.path_example, name="path-example"),
+    
+    # ===== WRITING VIEWS EXAMPLES =====
+    # Simple view example
+    path("datetime/", views.current_datetime, name="current-datetime"),
+    path("json/", views.json_response, name="json-response"),
+    path("redirect/", views.redirect_example, name="redirect-example"),
+    path("redirect/<int:year>/", views.redirect_with_args, name="redirect-with-args"),
+    
+    # Error handling examples
+    path("test-error/", views.my_view, name="test-error"),  # Use ?foo=1 to get 404
+    path("created/", views.created_view, name="created-view"),
+    path("poll/<int:poll_id>/", views.detail, name="poll-detail"),
+    path("test-500/", views.test_500_error, name="test-500"),  # Test 500 error handler
+    path("test-403/", views.test_permission_denied, name="test-403"),  # Test 403 error handler
+    
+    # Async view example
+    path("async-datetime/", views.async_current_datetime, name="async-datetime"),
 ]

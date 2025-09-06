@@ -21,3 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('articles.urls')),
 ]
+
+# Custom error handlers (as per Django Views documentation)
+handler404 = 'articles.views.custom_404_view'
+handler500 = 'articles.views.custom_500_view'
+handler403 = 'articles.views.custom_403_view'
+handler400 = 'articles.views.custom_400_view'
