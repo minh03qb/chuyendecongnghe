@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form - Django Forms Lab</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { background: white; border-radius: 10px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="email"], textarea, select { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        }
+        textarea { height: 120px; resize: vertical; }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .nav-link { color: #007bff; text-decoration: none; }
+        .nav-link:hover { text-decoration: underline; }
+        .info { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .errorlist { color: #dc3545; list-style: none; padding: 0; }
+        .errorlist li { margin: 5px 0; }
+        .checkbox-group { display: flex; align-items: center; gap: 10px; }
+        .checkbox-group input { width: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Form</h1>
+        
+        <div class="info">
+            <p><strong>Example:</strong> Contact form with multiple field types.</p>
+            <p>Demonstrates CharField, EmailField, BooleanField, and Textarea widget.</p>
+        </div>
+
+        <form action="/forms/contact/" method="post">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error|escape }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <div class="form-group">
+                {{ form.subject.errors }}
+                {{ form.subject.label_tag }}
+                {{ form.subject }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.message.errors }}
+                {{ form.message.label_tag }}
+                {{ form.message }}
+            </div>
+            
+            <div class="form-group">
+                {{ form.sender.errors }}
+                {{ form.sender.label_tag }}
+                {{ form.sender }}
+            </div>
+            
+            <div class="form-group checkbox-group">
+                {{ form.cc_myself.errors }}
+                {{ form.cc_myself }}
+                {{ form.cc_myself.label_tag }}
+            </div>
+            
+            <button type="submit">Send Message</button>
+        </form>
+        
+        <p><a href="/forms/" class="nav-link">← Back to Forms Home</a></p>
+    </div>
+</body>
+</html>

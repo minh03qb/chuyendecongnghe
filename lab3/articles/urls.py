@@ -64,4 +64,24 @@ urlpatterns = [
     path("cbv/basic/", views.BasicView.as_view(), name="basic-view"),
     path("cbv/async/", views.AsyncClassView.as_view(), name="async-class-view"),
     path("cbv/api/", views.APIView.as_view(), name="api-view"),
+    
+    # ===== DJANGO FORMS EXAMPLES =====
+    # Forms home page
+    path("forms/", views.forms_home, name="forms-home"),
+    
+    # Basic forms examples
+    path("forms/get_name/", views.get_name, name="get-name-form"),
+    path("forms/thanks/", views.thanks_view, name="thanks-view"),
+    
+    # Contact form example
+    path("forms/contact/", views.contact, name="contact-form"),
+    
+    # Search form (GET method) example
+    path("forms/search/", views.search, name="search-form"),
+    
+    # Advanced form example
+    path("forms/advanced/", views.advanced_form_view, name="advanced-form"),
+    
+    # Feedback form with custom validation
+    path("forms/feedback/", views.feedback_view, name="feedback-form"),
 ]

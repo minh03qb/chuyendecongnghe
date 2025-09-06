@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Django Forms Lab</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { background: white; border-radius: 10px; padding: 40px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #28a745; margin-bottom: 20px; }
+        .success-icon { font-size: 4em; color: #28a745; margin-bottom: 20px; }
+        .message { color: #6c757d; font-size: 1.1em; line-height: 1.6; margin: 20px 0; }
+        .submitted-data { background: #e9ecef; padding: 20px; border-radius: 5px; margin: 30px 0; text-align: left; }
+        .submitted-data h3 { color: #495057; margin-top: 0; text-align: center; }
+        .data-item { margin: 10px 0; }
+        .data-label { font-weight: bold; color: #495057; }
+        .nav-links { margin-top: 30px; }
+        .nav-link { color: #007bff; text-decoration: none; margin: 0 15px; padding: 10px 20px; border: 1px solid #007bff; border-radius: 4px; display: inline-block; }
+        .nav-link:hover { background: #007bff; color: white; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">✅</div>
+        
+        <h1>Thank You!</h1>
+        
+        <div class="message">
+            <p>Your form has been submitted successfully.</p>
+            {% if name %}
+                <p>Hello <strong>{{ name }}</strong>! We've received your submission.</p>
+            {% endif %}
+        </div>
+
+        {% if submitted_data %}
+            <div class="submitted-data">
+                <h3>📋 Submitted Information</h3>
+                {% for key, value in submitted_data.items %}
+                    {% if value %}
+                        <div class="data-item">
+                            <span class="data-label">{{ key|title }}:</span> {{ value }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="nav-links">
+            <a href="/forms/" class="nav-link">← Back to Forms</a>
+            <a href="/" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+</body>
+</html>

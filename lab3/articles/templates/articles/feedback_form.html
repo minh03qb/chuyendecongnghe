@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form - Django Forms Lab</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { background: white; border-radius: 10px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; }
+        .form { background: #e9ecef; padding: 20px; border-radius: 5px; margin: 20px 0; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="email"], textarea, select { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        }
+        textarea { resize: vertical; min-height: 120px; }
+        input[type="radio"] { width: auto; margin-right: 8px; }
+        button { background-color: #28a745; color: white; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .radio-group { display: flex; gap: 20px; flex-wrap: wrap; }
+        .radio-option { display: flex; align-items: center; }
+        .errorlist { color: #dc3545; list-style: none; padding: 0; margin: 5px 0 0 0; }
+        .errorlist li { font-size: 0.9em; }
+        .nav-link { color: #007bff; text-decoration: none; }
+        .nav-link:hover { text-decoration: underline; }
+        .info { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .required { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback Form</h1>
+        
+        <div class="info">
+            <p><strong>Example:</strong> Feedback form with custom validation and rating system.</p>
+            <p>This form includes custom validation methods and demonstrates Django's clean_* methods.</p>
+        </div>
+
+        <div class="form">
+            <form action="/forms/feedback/" method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    {{ form.name.label_tag }}
+                    <span class="required">*</span>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    <span class="required">*</span>
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.subject.label_tag }}
+                    <span class="required">*</span>
+                    {{ form.subject }}
+                    {{ form.subject.errors }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Overall Rating <span class="required">*</span></label>
+                    <div class="radio-group">
+                        {% for radio in form.rating %}
+                            <div class="radio-option">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {{ form.rating.errors }}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.message.label_tag }}
+                    <span class="required">*</span>
+                    {{ form.message }}
+                    {{ form.message.errors }}
+                    <small style="color: #6c757d;">Minimum 10 characters required</small>
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="form-group">
+                        <ul class="errorlist">
+                            {{ form.non_field_errors }}
+                        </ul>
+                    </div>
+                {% endif %}
+                
+                <button type="submit">Submit Feedback</button>
+            </form>
+        </div>
+        
+        <p><a href="/forms/" class="nav-link">← Back to Forms Home</a></p>
+    </div>
+</body>
+</html>

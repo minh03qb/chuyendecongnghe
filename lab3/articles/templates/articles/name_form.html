@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Form - Django Forms Lab</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { background: white; border-radius: 10px; padding: 30px; max-width: 600px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="email"], textarea, select { 
+            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        }
+        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .nav-link { color: #007bff; text-decoration: none; }
+        .nav-link:hover { text-decoration: underline; }
+        .info { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        .errorlist { color: #dc3545; list-style: none; padding: 0; }
+        .errorlist li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Basic Name Form</h1>
+        
+        <div class="info">
+            <p><strong>Example:</strong> Basic Django form from the official documentation.</p>
+            <p>This form demonstrates the fundamental concepts of form handling in Django.</p>
+        </div>
+
+        <form action="/forms/name/" method="post">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error|escape }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <div class="form-group">
+                {{ form.your_name.errors }}
+                {{ form.your_name.label_tag }}
+                {{ form.your_name }}
+            </div>
+            
+            <button type="submit">Submit</button>
+        </form>
+        
+        <p><a href="/forms/" class="nav-link">← Back to Forms Home</a></p>
+    </div>
+</body>
+</html>

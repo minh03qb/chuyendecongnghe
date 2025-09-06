@@ -1,6 +1,14 @@
 # Django Views Lab
 
-This lab demonstrates Django Views concepts following the official Django documentation:
+This lab demonstrates Django Views concepts following the 7. **Redirects**: Using `redirect()` for view redirection
+8. **Async Views**: Asynchronous view functions
+9. **Error Handlers**: Custom error pages for different HTTP errors
+10. **View Arguments**: Handling URL parameters and request data
+11. **Class-based Views**: Object-oriented approach to views
+12. **TemplateView**: Rendering templates with context data
+13. **RedirectView**: HTTP redirects with static and dynamic URLs
+14. **View Class**: Basic view class with method-based dispatch
+15. **HTTP Method Handling**: Supporting GET, POST, PUT, DELETE methodscial Django documentation:
 - [Writing views](https://docs.djangoproject.com/en/5.2/topics/http/views/)
 - [Class-based views](https://docs.djangoproject.com/en/5.2/topics/class-based-views/)
 
@@ -26,8 +34,9 @@ lab3/
     ├── views.py          # All view examples
     ├── templates/
     │   └── articles/
-    │       ├── datetime.html  # Template for datetime view
-    │       └── 404.html       # Custom 404 template
+    │       ├── datetime.html     # Template for datetime view
+    │       ├── about.html        # Template for About class-based view
+    │       └── 404.html          # Custom 404 template
     └── migrations/
 ```
 
@@ -50,7 +59,15 @@ lab3/
 - **redirect_example**: Simple redirect to another view
 - **redirect_with_args**: Redirect with URL arguments
 
-### 🎨 Custom Error Handlers
+### �️ Class-based Views
+- **AboutView**: TemplateView example with custom context
+- **SimpleRedirectView**: Basic RedirectView with static URL
+- **DynamicRedirectView**: RedirectView with dynamic URL construction
+- **BasicView**: Basic View class handling GET/POST methods
+- **AsyncClassView**: Asynchronous class-based view
+- **APIView**: API-style view supporting multiple HTTP methods
+
+### �🎨 Custom Error Handlers
 - **custom_404_view**: Custom 404 page not found handler
 - **custom_500_view**: Custom 500 server error handler
 - **custom_403_view**: Custom 403 permission denied handler
@@ -90,6 +107,9 @@ lab3/
    - `/test-error/?foo=1` - Trigger 404 error
    - `/poll/999/` - Http404 exception
    - `/redirect/` - Redirect example
+   - `/cbv/about/` - TemplateView example
+   - `/cbv/basic/` - Basic class-based view
+   - `/cbv/api/` - API view (supports multiple HTTP methods)
 
 ## Error Testing
 
@@ -111,6 +131,11 @@ This lab covers the following sections from Django documentation:
 - ✅ Template rendering
 - ✅ JSON responses
 - ✅ Redirects
+- ✅ Basic class-based views
+- ✅ TemplateView
+- ✅ RedirectView  
+- ✅ View class with method dispatch
+- ✅ Asynchronous class-based views
 
 ## Next Steps
 

@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, RedirectView, View
 from django.urls import reverse_lazy
+from django.core.mail import send_mail
 import datetime
 import json
+
+# Import forms
+from .forms import NameForm, ContactForm, SearchForm, AdvancedForm, FeedbackForm
 
 # Create your views here.
 
@@ -352,3 +356,170 @@ class APIView(View):
             json.dumps(data, indent=2),
             content_type='application/json'
         )
+
+
+# ===== DJANGO FORMS EXAMPLES =====
+
+def get_name(request):
+    """Basic form example from Django documentation"""
+    if request.method == 'POST':
+        # Create a form instance and populate it with data from the request
+        form = NameForm(request.POST)
+        # Check whether it's valid
+        if form.is_valid():
+            # Process the data in form.cleaned_data as required
+            name = form.cleaned_data['your_name']
+            # Redirect to a new URL
+            return HttpResponseRedirect(f'/forms/thanks/?name={name}')
+    else:
+        # If a GET (or any other method) we'll create a blank form
+        form = NameForm()
+
+    return render(request, 'articles/name_form.html', {'form': form})
+
+
+def contact(request):
+    """Contact form example with email sending"""
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+            sender = form.cleaned_data['sender']
+            cc_myself = form.cleaned_data['cc_myself']
+
+            # In a real application, you would send the email here
+            # send_mail(subject, message, sender, ['admin@example.com'])
+            
+            return render(request, 'articles/contact_success.html', {
+                'subject': subject,
+                'sender': sender,
+                'cc_myself': cc_myself
+            })
+    else:
+        form = ContactForm()
+
+    return render(request, 'articles/contact_form.html', {'form': form})
+
+
+def search(request):
+    """Search form using GET method"""
+    results = []
+    form = SearchForm(request.GET or None)
+    
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        category = form.cleaned_data.get('category', 'all')
+        
+        # Mock search results
+        mock_data = [
+            {'title': 'Django Tutorial', 'category': 'tutorials', 'content': 'Learn Django from scratch'},
+            {'title': 'Python Guide', 'category': 'guides', 'content': 'Complete Python programming guide'},
+            {'title': 'Web Development Article', 'category': 'articles', 'content': 'Modern web development practices'},
+            {'title': 'Database Design Guide', 'category': 'guides', 'content': 'How to design efficient databases'},
+            {'title': 'API Development Tutorial', 'category': 'tutorials', 'content': 'Building REST APIs with Django'},
+        ]
+        
+        # Filter results based on query and category
+        for item in mock_data:
+            if query.lower() in item['title'].lower() or query.lower() in item['content'].lower():
+                if category == 'all' or item['category'] == category:
+                    results.append(item)
+    
+    return render(request, 'articles/search.html', {
+        'form': form,
+        'results': results,
+        'query': form.cleaned_data.get('query', '') if form.is_valid() else ''
+    })
+
+
+def advanced_form_view(request):
+    """Advanced form with various field types"""
+    if request.method == 'POST':
+        form = AdvancedForm(request.POST, request.FILES)
+        if form.is_valid():
+            return render(request, 'articles/advanced_form_success.html', {
+                'data': form.cleaned_data
+            })
+    else:
+        form = AdvancedForm()
+
+    return render(request, 'articles/advanced_form.html', {'form': form})
+
+
+def feedback_view(request):
+    """Feedback form with custom validation"""
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            return render(request, 'articles/feedback_success.html', {
+                'data': form.cleaned_data
+            })
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'articles/feedback_form.html', {'form': form})
+
+
+def thanks_view(request):
+    """Thank you page for forms"""
+    name = request.GET.get('name', 'Anonymous')
+    return HttpResponse(
+        f'<h1>Thank you, {name}!</h1>'
+        f'<p>Your form has been submitted successfully.</p>'
+        f'<a href="/forms/">← Back to Forms</a>'
+    )
+
+
+def forms_home(request):
+    """Home page for forms examples"""
+    html = '''
+    <html lang="en">
+    <head>
+        <title>Django Forms Lab</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+            .container { background: white; border-radius: 10px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            h1 { color: #0066cc; }
+            h2 { color: #0088cc; margin-top: 30px; }
+            ul { list-style-type: none; }
+            li { margin: 10px 0; }
+            a { text-decoration: none; color: #0066cc; }
+            a:hover { text-decoration: underline; }
+            .description { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Django Forms Lab Examples</h1>
+            <div class="description">
+                <p>This section demonstrates Django Forms concepts from the official documentation.</p>
+                <p>Forms are essential for handling user input in web applications.</p>
+            </div>
+            
+            <h2>📝 Basic Forms</h2>
+            <ul>
+                <li><a href="/forms/name/">Name Form (Basic Example)</a></li>
+                <li><a href="/forms/contact/">Contact Form (Multiple Fields)</a></li>
+            </ul>
+            
+            <h2>🔍 GET Method Forms</h2>
+            <ul>
+                <li><a href="/forms/search/">Search Form (GET method)</a></li>
+            </ul>
+            
+            <h2>🎛️ Advanced Forms</h2>
+            <ul>
+                <li><a href="/forms/advanced/">Advanced Form (All Field Types)</a></li>
+                <li><a href="/forms/feedback/">Feedback Form (Custom Validation)</a></li>
+            </ul>
+            
+            <h2>🏠 Other Sections</h2>
+            <ul>
+                <li><a href="/">← Back to Main Lab Home</a></li>
+            </ul>
+        </div>
+    </body>
+    </html>
+    '''
+    return HttpResponse(html)

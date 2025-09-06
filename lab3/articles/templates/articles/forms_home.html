@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms Home - Django Forms Lab</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { background: white; border-radius: 10px; padding: 30px; max-width: 900px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #0066cc; text-align: center; margin-bottom: 30px; }
+        .intro { background: #e9ecef; padding: 20px; border-radius: 5px; margin: 20px 0; text-align: center; }
+        .forms-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 30px 0; }
+        .form-card { 
+            background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .form-card:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+        }
+        .form-card h3 { color: #0066cc; margin-top: 0; }
+        .form-card p { color: #6c757d; margin: 10px 0; }
+        .form-link { 
+            display: inline-block; background: #007bff; color: white; padding: 8px 16px; 
+            text-decoration: none; border-radius: 4px; margin-top: 10px; 
+        }
+        .form-link:hover { background: #0056b3; color: white; text-decoration: none; }
+        .nav-link { color: #007bff; text-decoration: none; }
+        .nav-link:hover { text-decoration: underline; }
+        .features { background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 5px; margin: 30px 0; }
+        .features h3 { color: #856404; margin-top: 0; }
+        .features ul { color: #856404; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Django Forms Lab</h1>
+        
+        <div class="intro">
+            <p><strong>Welcome to Django Forms Lab!</strong></p>
+            <p>This section demonstrates various Django forms concepts following the official documentation.</p>
+            <p>Explore different form types, validation techniques, and form handling patterns.</p>
+        </div>
+
+        <div class="forms-grid">
+            <div class="form-card">
+                <h3>Simple Name Form</h3>
+                <p>Basic form handling with POST method. Demonstrates simple form processing and template rendering.</p>
+                <p><strong>Features:</strong> CharField, POST handling, form validation</p>
+                <a href="/forms/get_name/" class="form-link">Try Name Form →</a>
+            </div>
+            
+            <div class="form-card">
+                <h3>Contact Form</h3>
+                <p>Contact form with multiple field types including email and message. Shows form validation and success handling.</p>
+                <p><strong>Features:</strong> EmailField, CharField, TextArea, success redirect</p>
+                <a href="/forms/contact/" class="form-link">Try Contact Form →</a>
+            </div>
+            
+            <div class="form-card">
+                <h3>Search Form (GET)</h3>
+                <p>Search functionality using GET method with dropdown selection. Demonstrates form handling with query parameters.</p>
+                <p><strong>Features:</strong> GET method, ChoiceField, search results</p>
+                <a href="/forms/search/" class="form-link">Try Search Form →</a>
+            </div>
+            
+            <div class="form-card">
+                <h3>Advanced Form</h3>
+                <p>Comprehensive form with various field types and validation rules. Shows advanced form features.</p>
+                <p><strong>Features:</strong> Multiple field types, custom validation, required fields</p>
+                <a href="/forms/advanced/" class="form-link">Try Advanced Form →</a>
+            </div>
+            
+            <div class="form-card">
+                <h3>Feedback Form</h3>
+                <p>Feedback form with custom validation methods and rating system. Demonstrates clean_* methods.</p>
+                <p><strong>Features:</strong> Radio buttons, custom validation, clean methods</p>
+                <a href="/forms/feedback/" class="form-link">Try Feedback Form →</a>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3>🎯 What You'll Learn</h3>
+            <ul>
+                <li>Creating Django forms with various field types</li>
+                <li>Form validation and error handling</li>
+                <li>GET vs POST method handling</li>
+                <li>Custom validation methods (clean_* methods)</li>
+                <li>Form rendering in templates</li>
+                <li>CSRF protection in Django forms</li>
+                <li>Success page redirection</li>
+                <li>Form field widgets and customization</li>
+            </ul>
+        </div>
+        
+        <p style="text-align: center;">
+            <a href="/articles/" class="nav-link">← Back to Articles Home</a>
+        </p>
+    </div>
+</body>
+</html>
