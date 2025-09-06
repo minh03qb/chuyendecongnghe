@@ -1,4 +1,5 @@
 from django.urls import path, register_converter, re_path
+from django.views.generic import TemplateView
 from . import views, converters
 
 # Register custom converter
@@ -51,4 +52,16 @@ urlpatterns = [
     
     # Async view example
     path("async-datetime/", views.async_current_datetime, name="async-datetime"),
+    
+    # ===== CLASS-BASED VIEWS EXAMPLES =====
+    # Direct usage in URLconf
+    path("cbv/template-direct/", TemplateView.as_view(template_name="articles/about.html"), name="template-direct"),
+    
+    # Subclassed views
+    path("cbv/about/", views.AboutView.as_view(), name="about-view"),
+    path("cbv/redirect/", views.SimpleRedirectView.as_view(), name="simple-redirect"),
+    path("cbv/redirect/<int:year>/", views.DynamicRedirectView.as_view(), name="dynamic-redirect"),
+    path("cbv/basic/", views.BasicView.as_view(), name="basic-view"),
+    path("cbv/async/", views.AsyncClassView.as_view(), name="async-class-view"),
+    path("cbv/api/", views.APIView.as_view(), name="api-view"),
 ]

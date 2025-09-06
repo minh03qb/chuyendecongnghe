@@ -1,6 +1,8 @@
 # Django Views Lab
 
-This lab demonstrates Django Views concepts following the official Django documentation: [Writing views](https://docs.djangoproject.com/en/5.2/topics/http/views/)
+This lab demonstrates Django Views concepts following the official Django documentation:
+- [Writing views](https://docs.djangoproject.com/en/5.2/topics/http/views/)
+- [Class-based views](https://docs.djangoproject.com/en/5.2/topics/class-based-views/)
 
 ## Lab Structure
 

@@ -1,6 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404
+from django.views.generic import TemplateView, RedirectView, View
+from django.urls import reverse_lazy
 import datetime
+import json
 
 # Create your views here.
 
@@ -36,6 +39,16 @@ def home(request):
         <ul>
             <li><a href="/redirect/">Redirect Example</a></li>
             <li><a href="/redirect/2024/">Redirect with Arguments</a></li>
+        </ul>
+        
+        <h2>🏛️ Class-based Views</h2>
+        <ul>
+            <li><a href="/cbv/about/">TemplateView Example</a></li>
+            <li><a href="/cbv/redirect/">RedirectView Example</a></li>
+            <li><a href="/cbv/redirect/2025/">Dynamic RedirectView</a></li>
+            <li><a href="/cbv/basic/">Basic View (GET/POST)</a></li>
+            <li><a href="/cbv/async/">Async Class View</a></li>
+            <li><a href="/cbv/api/">API View (supports GET/POST/PUT/DELETE)</a></li>
         </ul>
         
         <h2>⚠️ Error Handling</h2>
@@ -223,3 +236,119 @@ def year_archive_with_extra(request, year, **kwargs):
     if kwargs:
         extra_info = f", Extra options: {kwargs}"
     return HttpResponse(f"Archive for year: {year}{extra_info}")
+
+
+# ===== CLASS-BASED VIEWS EXAMPLES =====
+
+class AboutView(TemplateView):
+    """Basic TemplateView example - displays a static template"""
+    template_name = "articles/about.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['page_title'] = 'About Us'
+        context['description'] = 'This is an example of Django Class-based TemplateView'
+        context['current_time'] = datetime.datetime.now()
+        return context
+
+
+class SimpleRedirectView(RedirectView):
+    """Basic RedirectView example - redirects to another URL"""
+    url = '/datetime/'  # Static redirect
+    permanent = False   # Use 302 redirect instead of 301
+
+
+class DynamicRedirectView(RedirectView):
+    """Dynamic RedirectView - constructs URL based on arguments"""
+    permanent = False
+    
+    def get_redirect_url(self, *args, **kwargs):
+        year = kwargs.get('year')
+        return f'/articles/{year}/'
+
+
+class BasicView(View):
+    """Basic View class example - handles different HTTP methods"""
+    
+    def get(self, request, *args, **kwargs):
+        return HttpResponse(
+            '<h1>Basic Class-based View</h1>'
+            '<p>This is a GET request</p>'
+            '<form method="post"><button type="submit">Send POST</button></form>'
+        )
+    
+    def post(self, request, *args, **kwargs):
+        return HttpResponse(
+            '<h1>Basic Class-based View</h1>'
+            '<p>This is a POST request</p>'
+            '<a href="/cbv/basic/">Back to GET</a>'
+        )
+
+
+class AsyncClassView(View):
+    """Asynchronous class-based view example"""
+    
+    async def get(self, request, *args, **kwargs):
+        import asyncio
+        # Simulate some async operation
+        await asyncio.sleep(0.5)
+        
+        html = f'''
+        <h1>Async Class-based View</h1>
+        <p>This response was generated asynchronously!</p>
+        <p>Current time: {datetime.datetime.now()}</p>
+        <a href="/">← Back to Home</a>
+        '''
+        return HttpResponse(html)
+
+
+class APIView(View):
+    """API-style class-based view with different HTTP methods"""
+    
+    def get(self, request, *args, **kwargs):
+        data = {
+            'message': 'GET request to API view',
+            'timestamp': datetime.datetime.now().isoformat(),
+            'method': 'GET',
+            'available_methods': ['GET', 'POST', 'PUT', 'DELETE']
+        }
+        return HttpResponse(
+            json.dumps(data, indent=2),
+            content_type='application/json'
+        )
+    
+    def post(self, request, *args, **kwargs):
+        data = {
+            'message': 'POST request to API view',
+            'timestamp': datetime.datetime.now().isoformat(),
+            'method': 'POST',
+            'data_received': 'Success'
+        }
+        return HttpResponse(
+            json.dumps(data, indent=2),
+            content_type='application/json'
+        )
+    
+    def put(self, request, *args, **kwargs):
+        data = {
+            'message': 'PUT request to API view',
+            'timestamp': datetime.datetime.now().isoformat(),
+            'method': 'PUT',
+            'data_updated': 'Success'
+        }
+        return HttpResponse(
+            json.dumps(data, indent=2),
+            content_type='application/json'
+        )
+    
+    def delete(self, request, *args, **kwargs):
+        data = {
+            'message': 'DELETE request to API view',
+            'timestamp': datetime.datetime.now().isoformat(),
+            'method': 'DELETE',
+            'data_deleted': 'Success'
+        }
+        return HttpResponse(
+            json.dumps(data, indent=2),
+            content_type='application/json'
+        )
