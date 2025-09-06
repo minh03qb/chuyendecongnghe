@@ -1,36 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search - Django Forms Lab</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
-        .container { background: white; border-radius: 10px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #0066cc; }
-        .search-form { background: #e9ecef; padding: 20px; border-radius: 5px; margin: 20px 0; }
-        .form-row { display: flex; gap: 15px; align-items: end; }
-        .form-group { flex: 1; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], select { 
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
         }
-        button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        .results { margin-top: 30px; }
-        .result-item { background: #f8f9fa; padding: 15px; border-left: 4px solid #007bff; margin: 10px 0; }
-        .result-title { font-weight: bold; color: #0066cc; }
-        .result-category { color: #6c757d; font-size: 0.9em; }
-        .no-results { text-align: center; color: #6c757d; padding: 40px; }
-        .nav-link { color: #007bff; text-decoration: none; }
-        .nav-link:hover { text-decoration: underline; }
-        .info { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0066cc;
+        }
+
+        .search-form {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        .result-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin: 10px 0;
+        }
+
+        .result-title {
+            font-weight: bold;
+            color: #0066cc;
+        }
+
+        .result-category {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #6c757d;
+            padding: 40px;
+        }
+
+        .nav-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Search Form (GET Method)</h1>
-        
+
         <div class="info">
             <p><strong>Example:</strong> Search form using GET method.</p>
             <p>This form demonstrates how to handle forms with GET requests for search functionality.</p>
@@ -43,42 +131,43 @@
                         {{ form.query.label_tag }}
                         {{ form.query }}
                     </div>
-                    
+
                     <div class="form-group">
                         {{ form.category.label_tag }}
                         {{ form.category }}
                     </div>
-                    
+
                     <div class="form-group">
                         <button type="submit">Search</button>
                     </div>
                 </div>
             </form>
         </div>
-        
+
         {% if query %}
-            <div class="results">
-                <h2>Search Results for "{{ query }}"</h2>
-                
-                {% if results %}
-                    <p>Found {{ results|length }} result{{ results|length|pluralize }}:</p>
-                    {% for result in results %}
-                        <div class="result-item">
-                            <div class="result-title">{{ result.title }}</div>
-                            <div class="result-category">Category: {{ result.category|title }}</div>
-                            <p>{{ result.content }}</p>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <div class="no-results">
-                        <p>No results found for your search.</p>
-                        <p>Try different keywords or select "All Categories".</p>
-                    </div>
-                {% endif %}
+        <div class="results">
+            <h2>Search Results for "{{ query }}"</h2>
+
+            {% if results %}
+            <p>Found {{ results|length }} result{{ results|length|pluralize }}:</p>
+            {% for result in results %}
+            <div class="result-item">
+                <div class="result-title">{{ result.title }}</div>
+                <div class="result-category">Category: {{ result.category|title }}</div>
+                <p>{{ result.content }}</p>
             </div>
+            {% endfor %}
+            {% else %}
+            <div class="no-results">
+                <p>No results found for your search.</p>
+                <p>Try different keywords or select "All Categories".</p>
+            </div>
+            {% endif %}
+        </div>
         {% endif %}
-        
+
         <p><a href="/forms/" class="nav-link">← Back to Forms Home</a></p>
     </div>
 </body>
+
 </html>

@@ -1,37 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Form - Django Forms Lab</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
-        .container { background: white; border-radius: 10px; padding: 30px; max-width: 800px; margin: 0 auto; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1 { color: #0066cc; }
-        .form { background: #e9ecef; padding: 20px; border-radius: 5px; margin: 20px 0; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="email"], input[type="number"], input[type="password"], 
-        textarea, select { 
-            width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
         }
-        textarea { resize: vertical; min-height: 100px; }
-        input[type="checkbox"] { width: auto; margin-right: 8px; }
-        button { background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        .checkbox-group { display: flex; align-items: center; }
-        .errorlist { color: #dc3545; list-style: none; padding: 0; margin: 5px 0 0 0; }
-        .errorlist li { font-size: 0.9em; }
-        .nav-link { color: #007bff; text-decoration: none; }
-        .nav-link:hover { text-decoration: underline; }
-        .info { background: #e9ecef; padding: 15px; border-radius: 5px; margin: 20px 0; }
-        .required { color: #dc3545; }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #0066cc;
+        }
+
+        .form {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .errorlist {
+            color: #dc3545;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+        }
+
+        .errorlist li {
+            font-size: 0.9em;
+        }
+
+        .nav-link {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .info {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .required {
+            color: #dc3545;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Advanced Form</h1>
-        
+
         <div class="info">
             <p><strong>Example:</strong> Advanced form with various field types and validation.</p>
             <p>This form demonstrates different field types, custom validation, and error handling in Django forms.</p>
@@ -40,48 +128,48 @@
         <div class="form">
             <form action="/forms/advanced/" method="post">
                 {% csrf_token %}
-                
+
                 <div class="form-group">
                     {{ form.title.label_tag }}
                     <span class="required">*</span>
                     {{ form.title }}
                     {{ form.title.errors }}
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.email.label_tag }}
                     <span class="required">*</span>
                     {{ form.email }}
                     {{ form.email.errors }}
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.phone.label_tag }}
                     {{ form.phone }}
                     {{ form.phone.errors }}
                     <small style="color: #6c757d;">Format: +1234567890 or 1234567890</small>
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.age.label_tag }}
                     {{ form.age }}
                     {{ form.age.errors }}
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.website.label_tag }}
                     {{ form.website }}
                     {{ form.website.errors }}
                     <small style="color: #6c757d;">Enter full URL including http:// or https://</small>
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.country.label_tag }}
                     <span class="required">*</span>
                     {{ form.country }}
                     {{ form.country.errors }}
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.password.label_tag }}
                     <span class="required">*</span>
@@ -89,14 +177,14 @@
                     {{ form.password.errors }}
                     <small style="color: #6c757d;">Minimum 8 characters</small>
                 </div>
-                
+
                 <div class="form-group">
                     {{ form.bio.label_tag }}
                     {{ form.bio }}
                     {{ form.bio.errors }}
                     <small style="color: #6c757d;">Tell us about yourself (optional)</small>
                 </div>
-                
+
                 <div class="form-group">
                     <div class="checkbox-group">
                         {{ form.agree_terms }}
@@ -105,20 +193,21 @@
                     </div>
                     {{ form.agree_terms.errors }}
                 </div>
-                
+
                 {% if form.non_field_errors %}
-                    <div class="form-group">
-                        <ul class="errorlist">
-                            {{ form.non_field_errors }}
-                        </ul>
-                    </div>
+                <div class="form-group">
+                    <ul class="errorlist">
+                        {{ form.non_field_errors }}
+                    </ul>
+                </div>
                 {% endif %}
-                
+
                 <button type="submit">Submit Advanced Form</button>
             </form>
         </div>
-        
+
         <p><a href="/forms/" class="nav-link">← Back to Forms Home</a></p>
     </div>
 </body>
+
 </html>
