@@ -1,6 +1,8 @@
-from rest_framework import status, permissions
+from rest_framework import status, permissions, renderers
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.reverse import reverse
 from django.http import Http404
 from django.contrib.auth.models import User
 from snippets.models import Snippet
@@ -16,11 +18,11 @@ class SnippetList(APIView):
 
     def get(self, request, format=None):
         snippets = Snippet.objects.all()
-        serializer = SnippetSerializer(snippets, many=True)
+        serializer = SnippetSerializer(snippets, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = SnippetSerializer(data=request.data)
+        serializer = SnippetSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save(owner=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -41,13 +43,13 @@ class SnippetDetail(APIView):
 
     def get(self, request, pk, format=None):
         snippet = self.get_object(pk)
-        serializer = SnippetSerializer(snippet)
+        serializer = SnippetSerializer(snippet, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
         snippet = self.get_object(pk)
         self.check_object_permissions(self.request, snippet)
-        serializer = SnippetSerializer(snippet, data=request.data)
+        serializer = SnippetSerializer(snippet, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -66,7 +68,7 @@ class UserList(APIView):
     """
     def get(self, request, format=None):
         users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        serializer = UserSerializer(users, many=True, context={'request': request})
         return Response(serializer.data)
 
 
@@ -82,5 +84,30 @@ class UserDetail(APIView):
 
     def get(self, request, pk, format=None):
         user = self.get_object(pk)
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(user, context={'request': request})
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('user-list', request=request, format=format),
+        'snippets': reverse('snippet-list', request=request, format=format)
+    })
+
+
+class SnippetHighlight(APIView):
+    """
+    Return the highlighted HTML representation of a snippet.
+    """
+    renderer_classes = [renderers.StaticHTMLRenderer]
+
+    def get_object(self, pk):
+        try:
+            return Snippet.objects.get(pk=pk)
+        except Snippet.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        snippet = self.get_object(pk)
+        return Response(snippet.highlighted)
